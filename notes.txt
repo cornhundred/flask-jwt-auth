@@ -44,7 +44,5 @@ Getting Started
 
     Once the Postgres server is running, create two new databases from psql that share the same name as your project name:
 
-
-
       (env)$ psql
 
