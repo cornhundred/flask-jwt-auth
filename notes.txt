@@ -45,4 +45,21 @@ Getting Started
     Once the Postgres server is running, create two new databases from psql that share the same name as your project name:
 
       (env)$ psql
+      # create database flask_jwt_auth;
+      CREATE DATABASE
+      # create database flask_jwt_auth_test;
+      CREATE DATABASE
+      # \q
+
+    Before applying the database migrations we need to update the config file found in project/server/config.py. Simply update the database_name:
+
+      database_name = 'flask_jwt_auth'
+
+    Set the environment variables in the terminal:
+
+      (env)$ export APP_SETTINGS="project.server.config.DevelopmentConfig"
+
+    Update the following test in project/tests/test__config.py:
+
+
 
