@@ -84,4 +84,28 @@ JWT Setup
     (env)$ pip freeze > requirements.txt
 
   Encode token
+    Add the following method to the User() class in project/server/models.py
+
+    def encode_auth_token(self, user_id):
+      ...
+
+    Don't forget the import jwt
+
+  So, given a user id, this method creates and returns a token from the payload and hte secrete key set in the config.py file. The payload is where we add metadata about the token and information about the user. This information is often referred to as the JWT Claims. We utilize the following 'claims':
+    * exp: expiration date of the token
+    * iat: the time the token is generated
+    * sub: the subject of the token
+
+  The secret key must be random and only accessable server-side. Use the Python interpreter to generate a key:
+
+    (env)$ python
+    >>> import os
+    >>> os.urandom(24)
+    b"...""
+    >>>
+
+  Set the key as an environment variable:
+
+    (env)$ export SECRET_KEY="..."
+
 
