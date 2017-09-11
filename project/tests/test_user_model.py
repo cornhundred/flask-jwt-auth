@@ -14,11 +14,21 @@ class TestUserModel(BaseTestCase):
         email = inst_email,
         password = 'test'
       )
-    print('\n\nusername: ' + str(inst_email) + '\n**************\n')
     db.session.add(user)
     db.session.commit()
     auth_token = user.encode_auth_token(user.id)
     self.assertTrue(isinstance(auth_token, bytes))
+
+  def test_decode_auth_token(self):
+    user = User(
+      email = 'test@test.com',
+      password = 'test'
+    )
+    db.session.add(user)
+    db.session.commit()
+    auth_token = user.encode_auth_token(user.id)
+    self.assertTrue(isinstance(auth_token, bytes))
+    self.assertTrue(User.decode_auth_token(auth_token) == 1)
 
 if __name__ == '__main__':
   unittest.main()
