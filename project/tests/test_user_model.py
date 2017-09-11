@@ -10,6 +10,9 @@ from project.tests.base import BaseTestCase
 class TestUserModel(BaseTestCase):
 
   def test_encode_auth_token(self):
+    '''
+    Test encode auth token
+    '''
     inst_email = 'test@test.com'
     user = User(
         email = inst_email,
@@ -21,6 +24,9 @@ class TestUserModel(BaseTestCase):
     self.assertTrue(isinstance(auth_token, bytes))
 
   def test_decode_auth_token(self):
+    '''
+    Test Decode auth token
+    '''
     user = User(
       email = 'test@test.com',
       password = 'test'
