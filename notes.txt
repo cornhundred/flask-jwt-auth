@@ -125,3 +125,15 @@ JWT Setup
 
     Note: We have used a static method since it does not relate to the class' instance.
 
+Route Setup
+  Now we can configure the auth routes using a test-first approach:
+    * /auth/register
+    * /auth/login
+    * /auth/logout
+    * /auth/user
+
+  Start by creating a new folder called 'auth' in the 'project/server'. Then within 'auth' add two files, '__init__.py' and views.py. Finally, add the following code to views.py.
+
+    # project/server/auth/views.py
+    ...
+
