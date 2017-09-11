@@ -62,4 +62,26 @@ Getting Started
     Update the following test in project/tests/test__config.py:
 
 
+JWT Setup
+  The auth workflow works as follows:
+    * Client provides email and password, which is sent to the server
+    * Server then verifies that email and password are correct and responds with an auth token
+    * Client stores the token and sends it along with all subseuent requests to the API
+    * Server decodes the token and validates it
+
+  The cycle repeats until the token expires or is revoked. In the latter case, the server issues a new token.
+
+  The token themselves are divided into three parts:
+    * Header
+    * Payload
+    * Signature
+
+  We'll dive a bit deeper into the payload, but if you're curious, you can read more about each part in the Intro to JSON Web Tokens article.
+
+  To work with JSON Web Tokens in our app, insatl the PyJWT package:
+
+    (env)$ pip install pyjwt==1.4.2
+    (env)$ pip freeze > requirements.txt
+
+  Encode token
 
