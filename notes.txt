@@ -108,4 +108,20 @@ JWT Setup
 
     (env)$ export SECRET_KEY="..."
 
+  Decode Token
+    Similarly, to decode a token, add the following method to the User() class:
+
+      @staticmethod
+      def decode_auth_token(auth_token):
+        ...
+
+    We need to decode the auth token with every API request and verify its signature to be sure of the user's authenticity. To verify the auth_token, we use the same SECRET_KEY used to encode a token.
+
+    If the auth_token is valid, we get the user id from the sub index of the payload. If invalid, there could be two exceptions.
+
+      1. Expired Signature When the token is used after it's expired, it throws a ExpiredSignatureError exception. This means the time specified in the payload's exp field has expired.
+
+      2. Invalid Token: When the token supplied is not correct or malformed, then an InvalidTokenError exception is raised.
+
+    Note: We have used a static method since it does not relate to the class' instance.
 
