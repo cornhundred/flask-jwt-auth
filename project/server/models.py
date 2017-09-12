@@ -6,6 +6,10 @@ import jwt
 
 from project.server import app, db, bcrypt
 
+# my own imports
+from flask.views import MethodView
+from flask import Blueprint, request, make_response, jsonify
+
 class User(db.Model):
   """ User Model for storing user related details """
   __tablename__ = 'users'
@@ -58,4 +62,34 @@ class User(db.Model):
       return 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
       return 'Invalid token. Please log in again'
+
+
+class LoginAPI(MethodView):
+    """
+    User Login Resource
+    """
+    def post(self):
+      # get the post data
+      post_data = request.get_json()
+      try:
+        # fetch the user data
+        user = User.query.filter_by(
+          email=post_data.get('email')
+        ).first()
+        auth_token = user.encode_auth_token(user.id)
+        if auth_token:
+          responseObject = {
+            'status': 'success',
+            'message': 'Successfully logged in.',
+            'auth_token': auth_token.decode()
+          }
+          return make_response(jsonify(responseObject)), 200
+
+      except Exception as e:
+        print(e)
+        responseObject = {
+          'status': 'fail',
+          'message': 'Try again'
+        }
+        return make_response(jsonify(responseObject)), 500
 
