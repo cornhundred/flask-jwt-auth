@@ -4,7 +4,7 @@ from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
 
 from project.server import bcrypt, db
-from project.server.models import User, LoginAPI
+from project.server.models import User, LoginAPI, UserAPI
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -53,6 +53,8 @@ class RegisterAPI(MethodView):
 registration_view = RegisterAPI.as_view('register_api')
 login_view = LoginAPI.as_view('login_api')
 
+user_view = UserAPI.as_view('user_api')
+
 # add Rules for API endpoints
 auth_blueprint.add_url_rule(
   '/auth/register',
@@ -64,4 +66,10 @@ auth_blueprint.add_url_rule(
   '/auth/login',
   view_func=login_view,
   methods=['POST']
+)
+
+auth_blueprint.add_url_rule(
+  '/auth/status',
+  view_func = user_view,
+  methods = ['GET']
 )
