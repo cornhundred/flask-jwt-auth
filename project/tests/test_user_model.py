@@ -346,6 +346,8 @@ class TestUserModel(BaseTestCase):
   def test_valid_blacklisted_token_user(self):
     """ Test for user status with a blacklisted valid token """
     with self.client:
+
+      # post user
       resp_register = self.client.post(
         '/auth/register',
         data=json.dumps(dict(
@@ -354,11 +356,20 @@ class TestUserModel(BaseTestCase):
         )),
         content_type='application/json'
       )
+
       # blacklist a valid token
+      ##############################
+
+      # get the token
       blacklist_token = BlacklistToken(
-        token=json.loads(resp_register.data.decode())['auth_token'])
+        token=json.loads(resp_register.data.decode())['auth_token']
+      )
+
+      # add the token to the blacklist
       db.session.add(blacklist_token)
       db.session.commit()
+
+      # check that the token is blacklisted when checking auth_status
       response = self.client.get(
         '/auth/status',
         headers=dict(
