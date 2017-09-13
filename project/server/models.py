@@ -9,6 +9,8 @@ from project.server import app, db, bcrypt
 # my own imports
 from flask.views import MethodView
 from flask import Blueprint, request, make_response, jsonify
+import pdb
+import ast
 
 class User(db.Model):
   """ User Model for storing user related details """
@@ -68,9 +70,16 @@ class LoginAPI(MethodView):
     """
     User Login Resource
     """
+
     def post(self):
-      # get the post data
-      post_data = request.get_json()
+      # # get the post data
+      # post_data = request.get_json()
+
+      # get data from data (json not working??)
+      # pdb.set_trace();
+      post_data = ast.literal_eval(str(request.get_data())[2:-1])
+
+
       try:
         # fetch the user data
         user = User.query.filter_by(
