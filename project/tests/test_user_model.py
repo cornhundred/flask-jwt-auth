@@ -7,6 +7,9 @@ from project.server import db
 from project.server.models import User
 from project.tests.base import BaseTestCase
 
+# my imports
+import pdb
+
 class TestUserModel(BaseTestCase):
 
   def test_encode_auth_token(self):
@@ -136,31 +139,37 @@ class TestUserModel(BaseTestCase):
       self.assertTrue(response.content_type == 'application/json')
       self.assertTrue(response.status_code, 404)
 
-def test_user_status(self):
-    """ Test for user status """
-    with self.client:
-      resp_register = self.client.post(
-        '/auth/register',
-        data=json.dumps(dict(
-            email='joe@gmail.com',
-            password='123456'
-        )),
-        content_type='application/json'
-      )
-      response = self.client.get(
-        '/auth/status',
-        headers=dict(
-          Authorization='Bearer ' + json.loads(
-              resp_register.data.decode()
-          )['auth_token']
+  def test_user_status(self):
+      """ Test for user status """
+      with self.client:
+
+        # post user
+        resp_register = self.client.post(
+          '/auth/register',
+          data=json.dumps(dict(
+              email='joe@gmail.com',
+              password='123456'
+          )),
+          content_type='application/json'
         )
-      )
-      data = json.loads(response.data.decode())
-      self.assertTrue(data['status'] == 'success')
-      self.assertTrue(data['data'] is not None)
-      self.assertTrue(data['data']['email'] == 'joe@gmail.com')
-      self.assertTrue(data['data']['admin'] is 'true' or 'false')
-      self.assertEqual(response.status_code, 200)
+
+        # get user information using authorization info
+        response = self.client.get(
+          '/auth/status',
+          headers=dict(
+            Authorization='Bearer ' + json.loads(
+                resp_register.data.decode()
+            )['auth_token']
+          )
+        )
+
+        data = json.loads(response.data.decode())
+
+        self.assertTrue(data['status'] == 'success')
+        self.assertTrue(data['data'] is not None)
+        self.assertTrue(data['data']['email'] == 'joe@gmail.com')
+        self.assertTrue(data['data']['admin'] is 'true' or 'false')
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':

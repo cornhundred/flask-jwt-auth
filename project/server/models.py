@@ -118,7 +118,7 @@ class UserAPI(MethodView):
   """
   def get(self):
     # get the auth token
-    auth_header = request.headers.get('Authorixation')
+    auth_header = request.headers.get('Authorization')
     if auth_header:
       auth_token = auth_header.split(' ')[1]
     else:
