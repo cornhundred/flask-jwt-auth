@@ -106,16 +106,6 @@ class TestUserModel(BaseTestCase):
       self.assertTrue(resp_register.content_type == 'application/json')
       self.assertEqual(resp_register.status_code, 201)
 
-      # registered user login
-      # response = self.client.post(
-      #   '/auth/login',
-      #   data = json.dumps(dict(
-      #     email = 'joe@gmail.com',
-      #     password = '123456'
-      #   )),
-      #   content_type = 'application_json'
-      # )
-
       response = login_user(self, 'joe@gmail.com', '123456')
 
       data = json.loads(response.data.decode())
@@ -128,14 +118,8 @@ class TestUserModel(BaseTestCase):
   def test_non_registered_user_login(self):
     """ Test for login of non-registered user """
     with self.client:
-      response = self.client.post(
-        '/auth/login',
-        data = json.dumps(dict(
-          email='joe@gmail.com',
-          password='123456'
-          )),
-          content_type='application/json'
-      )
+
+      response = login_user(self, 'joe@gmail.com', '123456')
       data = json.loads(response.data.decode())
       self.assertTrue(data['status'] == 'fail')
       self.assertTrue(data['message'] == 'User does not exist')
@@ -174,7 +158,6 @@ class TestUserModel(BaseTestCase):
         self.assertTrue(data['data']['admin'] is 'true' or 'false')
         self.assertEqual(response.status_code, 200)
 
-  # manually written out
   def test_valid_logout(self):
     """ Test for logout before token expires """
     with self.client:
@@ -187,17 +170,7 @@ class TestUserModel(BaseTestCase):
       self.assertTrue(resp_register.content_type == 'application/json')
       self.assertEqual(resp_register.status_code, 201)
 
-
-      # user login with post request
-      resp_login = self.client.post(
-        '/auth/login',
-        data = json.dumps(dict(
-          email='joe@gmail.com',
-          password = '123456'
-        )),
-        content_type = 'application/json'
-      )
-
+      resp_login = login_user(self, 'joe@gmail.com', '123456')
 
       data_login = json.loads(resp_login.data.decode())
       self.assertTrue(data_login['status'] == 'success')
@@ -240,15 +213,7 @@ class TestUserModel(BaseTestCase):
       self.assertTrue(resp_register.content_type == 'application/json')
       self.assertEqual(resp_register.status_code, 201)
 
-      # user login
-      resp_login = self.client.post(
-        '/auth/login',
-        data=json.dumps(dict(
-          email='joe@gmail.com',
-          password='123456'
-        )),
-        content_type='application/json'
-      )
+      resp_login = login_user(self, 'joe@gmail.com', '123456')
 
       data_login = json.loads(resp_login.data.decode())
       self.assertTrue(data_login['status'] == 'success')
@@ -291,15 +256,9 @@ class TestUserModel(BaseTestCase):
       self.assertTrue(data_register['auth_token'])
       self.assertTrue(resp_register.content_type == 'application/json')
       self.assertEqual(resp_register.status_code, 201)
-      # user login
-      resp_login = self.client.post(
-        '/auth/login',
-        data=json.dumps(dict(
-          email='joe@gmail.com',
-          password='123456'
-        )),
-        content_type='application/json'
-      )
+
+      resp_login = login_user(self, 'joe@gmail.com', '123456')
+
       data_login = json.loads(resp_login.data.decode())
       self.assertTrue(data_login['status'] == 'success')
       self.assertTrue(data_login['message'] == 'Successfully logged in.')
