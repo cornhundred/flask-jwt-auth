@@ -224,7 +224,7 @@ class TestUserModel(BaseTestCase):
         )
       )
 
-      pdb.set_trace()
+      # pdb.set_trace()
 
       data = json.loads(response.data.decode())
       self.assertTrue(data['status'] == 'success')
@@ -247,7 +247,7 @@ class TestUserModel(BaseTestCase):
       data_register = json.loads(resp_register.data.decode())
       self.assertTrue(data_register['status'] == 'success')
       self.assertTrue(
-        data_register['message'] == 'Successfuly registered.'
+        data_register['message'] == 'Successfully registered.'
       )
       self.assertTrue(data_register['auth_token'])
       self.assertTrue(resp_register.content_type == 'application/json')
@@ -275,7 +275,7 @@ class TestUserModel(BaseTestCase):
 
       response = self.client.post(
         '/auth/logout',
-        hearder=dict(
+        headers=dict(
           Authorization='Bearer ' + json.loads(
             resp_login.data.decode()
           )['auth_token']
